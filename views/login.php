@@ -6,7 +6,7 @@
 	</form>
 	<?php if (!empty($errors)):?>
 		<?php foreach($errors as $error):?>
-			<div><?php echo htmlspecialchars($error); ?></div>
+			<div class="error_text"><?php echo htmlspecialchars($error); ?></div>
 		<?php endforeach;?>
 	<?php endif;?>
     <?php

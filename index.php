@@ -26,6 +26,9 @@ switch($page){
     case "start":
         show_start_page();
         break;
+    case "add":
+        add_book();
+        break;
     case "logout":
         logout();
         break;
