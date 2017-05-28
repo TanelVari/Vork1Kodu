@@ -34,14 +34,14 @@ function add_book(){
             $book['year'] = htmlspecialchars($_POST['year']);
         }
 
-        if (empty($_POST['isbn']) && !isset($_POST['no_isbn'])){
-            $errors[] = 'ISBN on puudu';
-        }
-        else if (!empty($_POST['isbn']) && strlen($_POST['isbn']) != 13){
-            $errors[] = 'ISBN on vale pikkusega';
-        }
-        else {
-            $book['isbn'] = htmlspecialchars($_POST['isbn']);
+        if (!isset($_POST['no_isbn'])){
+            if (!empty($_POST['isbn'])){
+                $book['isbn'] = htmlspecialchars($_POST['isbn']);
+            } else {
+                $errors[] = 'ISBN on puudu';
+            }
+        } else {
+            $book['no_isbn'] = "checked";
         }
 
         if (empty($_POST['category'])){

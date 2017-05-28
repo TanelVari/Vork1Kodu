@@ -40,16 +40,13 @@
     <div>
         <?php foreach($search_results as $book):?>
             <div>
-                <?php if (isset($book['title'])): ?>
-                    <p><a href="?page=book&id=<?php if (isset($book['id'])) echo htmlspecialchars($book["id"]); ?>"><?php echo htmlspecialchars($book["title"]); ?></a></p>
-                <?php endif; ?>
-
-                <?php if (isset($book['author'])): ?>
-                    <p><?php echo htmlspecialchars($book["author"]); ?></p>
-                <?php endif; ?>
-
-                <?php if (isset($book['borrower'])): ?>
-                    <p>Välja laenutatud</p>
+                <?php if (isset($book['title']) && isset($book['id']) && isset($book['author'])): ?>
+                    <p><a href="?page=book&id=<?php echo htmlspecialchars($book["id"]); ?>">
+                        <?php echo htmlspecialchars($book["title"]); ?>;
+                        <?php echo htmlspecialchars($book["author"]); ?>;
+                        <?php echo htmlspecialchars($book["year"]); ?></a>
+                        <?php if (isset($book['borrower'])) echo "; <span class=\"error_text\">Laenus</span>"; ?>
+                    </p>
                 <?php endif; ?>
             </div>
         <?php endforeach;?>
@@ -63,10 +60,11 @@
             <div>
                 <?php if (isset($book['title']) && isset($book['author']) && isset($book['year'])): ?>
                     <p><a href="?page=book&id=<?php if (isset($book['id'])) echo htmlspecialchars($book["id"]); ?>">
-                            <?php echo htmlspecialchars($book["title"]); ?>;
-                            <?php echo htmlspecialchars($book["author"]); ?>;
-                            <?php echo htmlspecialchars($book["year"]); ?>;
-                    </a></p>
+                        <?php echo htmlspecialchars($book["title"]); ?>;
+                        <?php echo htmlspecialchars($book["author"]); ?>;
+                        <?php echo htmlspecialchars($book["year"]); ?></a>
+                        <?php if (isset($book['borrower'])) echo "; <span class=\"error_text\">Laenus</span>"; ?></a>
+                    </p>
                 <?php endif; ?>
             </div>
         <?php endforeach;?>
@@ -75,16 +73,16 @@
 
 <?php if (!empty($borrowers)): ?>
     <div>
+        <div class="padding_top_bottom">
+            <h3>Välja laenutatud</h3>
+        </div>
         <?php foreach($borrowers as $book):?>
-            <div>
-                <div class="padding_top_bottom">
-                    <h3>Välja laenutatud</h3>
-                </div>
+            <div class="padding_top_bigger">
                 <form action="?page=return" method="POST" enctype="multipart/form-data">
-                    <?php if (isset($book['title'])) echo htmlspecialchars($book["title"]); ?><br/>
-                    <span class="font_smaller"><?php if (isset($book['name'])) echo htmlspecialchars($book["name"]); ?> (<?php if (isset($book['borrow_date'])) echo date('j-m-Y', strtotime(htmlspecialchars($book['borrow_date']))); ?>)</span><br/>
+                    <span class="padding_top_bigger"><?php if (isset($book['title'])) echo htmlspecialchars($book["title"]); ?> => </span>
+                    <?php if (isset($book['name'])) echo htmlspecialchars($book["name"]); ?> (<?php if (isset($book['borrow_date'])) echo date('j-m-Y', strtotime(htmlspecialchars($book['borrow_date']))); ?>)
                     <input type="hidden" name="book_id" value="<?php if (isset($book['id'])) echo htmlspecialchars($book['id']); ?>" />
-                    <input type="submit" value="Tagasta" name="return" />
+                    <input type="submit" value="Tõi tagasi" name="return" />
                 </form>
             </div>
         <?php endforeach;?>

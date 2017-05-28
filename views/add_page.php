@@ -19,7 +19,7 @@ global $errors;
 
     <label for="isbn">ISBN:</label><br/>
     <input type="number" name="isbn" id="isbn" min="1000000000000" max="9999999999999" width="200" value="<?php if (isset($book['isbn'])) echo htmlspecialchars($book['isbn']); ?>"/><br/>
-    <input type="checkbox" name="no_isbn" id="no_isbn" />
+    <input type="checkbox" name="no_isbn" id="no_isbn" <?php if (isset($book['no_isbn'])) echo "checked"; ?>/>
     <label for="no_isbn">ISBN numbrit pole</label><br/><br/>
 
     <label for="category">Kategooria</label>

@@ -59,7 +59,7 @@
                 <form action="?page=return" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="book_id" value="<?php if (isset($book['id'])) echo htmlspecialchars($book['id']); ?>" />
                     <input type="hidden" name="book_page" value="true" />
-                    <input type="submit" value="Tagasta" name="return" />
+                    <input type="submit" value="Tõi tagasi" name="return" />
                 </form>
             </div>
         <?php endif; ?>

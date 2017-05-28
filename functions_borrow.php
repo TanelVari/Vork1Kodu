@@ -20,7 +20,7 @@ function return_book(){
             if (isset($_POST['book_page'])){
                 header("Location: ?page=book&id=".htmlspecialchars($_POST['book_id']));
             } else {
-                include_once('views/start_page.php');
+                header("Location: ?page=start");
             }
         }
     } else {
