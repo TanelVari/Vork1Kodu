@@ -20,5 +20,8 @@ Ideaalplaan:
 Hankida triipkoodilugeja ja siis parsida andmed veebist naksti kohale. :)
 
 Testimiseks:
+
 user: Tanel
 pwd: kala
+
+Tabelite dump on kirjas tables.php failis.
