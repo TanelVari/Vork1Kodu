@@ -4,11 +4,9 @@
 function connect_db(){
 	global $connection;
 
-	$host="localhost";
-	$user="test";
-	$pass="t3st3r123";
-	$db="test";
-	$connection = mysqli_connect($host, $user, $pass, $db) or die("Can't connect to database - ".mysqli_error());
+    $config = include("config.php");
+
+	$connection = mysqli_connect($config["host"], $config["user"], $config["pass"], $config["db"]) or die("Can't connect to database - ".mysqli_error());
 	mysqli_query($connection, "SET CHARACTER SET UTF8") or die("Cannot set character set - ".mysqli_error($connection));
 }
 
