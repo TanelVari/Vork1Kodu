@@ -4,6 +4,7 @@ require_once('functions_base.php');
 require_once('functions_add.php');
 require_once('functions_borrow.php');
 require_once('functions_show.php');
+require_once('functions_book.php');
 
 session_start();
 connect_db();
@@ -40,6 +41,20 @@ switch($page){
     case "book":
         if (isset($id)){
             show_book_page($id);
+            break;
+        }
+        show_start_page();
+        break;
+    case "modify":
+        if (isset($id)){
+            modify_book_page($id);
+            break;
+        }
+        show_start_page();
+        break;
+    case "apply":
+        if (isset($id)){
+            apply_book_changes($id);
             break;
         }
         show_start_page();

@@ -30,31 +30,6 @@ function show_start_page(){
     include_once('views/start_page.php');
 }
 
-/*** show_book_page ***/
-function show_book_page($id){
-    global $connection;
-
-    check_admin_permissions();
-    $book = array();
-
-    $id = mysqli_real_escape_string($connection, htmlspecialchars($id));
-
-    $sql = "
-            SELECT tvari_kodu_books.*, tvari_kodu_categories.category AS 'category_name', tvari_kodu_users.name 
-            FROM ((tvari_kodu_books 
-            INNER JOIN tvari_kodu_categories ON tvari_kodu_books.category = tvari_kodu_categories.id) 
-            LEFT JOIN tvari_kodu_users ON tvari_kodu_users.id = tvari_kodu_books.borrower) 
-            WHERE tvari_kodu_books.id = ".$id;
-    //echo $sql;
-    $result = mysqli_query($connection, $sql);
-
-    while ($row = mysqli_fetch_assoc($result)){
-        $book = $row;
-    }
-
-    include_once('views/book_page.php');
-}
-
 /*** show_infrastructure_page ***/
 function show_infrastructure_page(){
     global $connection;

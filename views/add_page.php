@@ -15,7 +15,7 @@ global $errors;
     <input type="text" name="author" id="author" value="<?php if (isset($book['author'])) echo htmlspecialchars($book['author']); ?>"/><br/><br/>
 
     <label for="year">Väljaandmise aasta:</label><br/>
-    <input type="number" name="year" id="year" min="1700" max="<?php echo intval(date("Y")) + 3; ?>" value="<?php if (isset($book['year'])) echo htmlspecialchars($book['year']); ?>"/><br/><br/>
+    <input type="number" name="year" id="year" min="1700" max="<?php echo intval(date("Y")) + 3; ?>" value="<?php if (isset($book['year'])) {echo htmlspecialchars($book['year']);} else {echo date("Y");} ?>"/><br/><br/>
 
     <label for="isbn">ISBN:</label><br/>
     <input type="number" name="isbn" id="isbn" min="1000000000000" max="9999999999999" width="200" value="<?php if (isset($book['isbn'])) echo htmlspecialchars($book['isbn']); ?>"/><br/>
@@ -24,7 +24,6 @@ global $errors;
 
     <label for="category">Kategooria</label>
     <select name="category" id="category">
-        <!-- <option value="0" selected>== Lisa uus ==</option> -->
         <?php
 
         $categories = fetch_categories();

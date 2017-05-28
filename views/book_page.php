@@ -39,12 +39,16 @@
             <p>Välja laenatud: <?php echo htmlspecialchars($book['name']); ?> (<?php echo date('j-m-Y', strtotime(htmlspecialchars($book['borrow_date']))); ?>)</p>
         <?php endif; ?>
 
+        <a href="?page=modify&id=<?php if (isset($book['id'])) echo htmlspecialchars($book['id']); ?>">Muuda</a>
+
         <?php if (isset($book['name']) && isset($book['borrow_date'])): ?>
-            <form action="?page=return" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="book_id" value="<?php if (isset($book['id'])) echo htmlspecialchars($book['id']); ?>" />
-                <input type="hidden" name="book_page" value="true" />
-                <input type="submit" value="Tagasta" name="return" />
-            </form>
+            <div class="padding_top_bigger">
+                <form action="?page=return" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="book_id" value="<?php if (isset($book['id'])) echo htmlspecialchars($book['id']); ?>" />
+                    <input type="hidden" name="book_page" value="true" />
+                    <input type="submit" value="Tagasta" name="return" />
+                </form>
+            </div>
         <?php endif; ?>
     </div>
 <?php endif; ?>
