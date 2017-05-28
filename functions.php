@@ -1,6 +1,6 @@
 <?php
 
-
+/*** connect_db ***/
 function connect_db(){
 	global $connection;
 
@@ -12,6 +12,7 @@ function connect_db(){
 	mysqli_query($connection, "SET CHARACTER SET UTF8") or die("Cannot set character set - ".mysqli_error($connection));
 }
 
+/*** login ***/
 function login(){
     global $connection;
 
@@ -56,12 +57,14 @@ function login(){
     }
 }
 
+/*** logout ***/
 function logout(){
 	$_SESSION = array();
 	session_destroy();
 	header("Location: ?");
 }
 
+/*** show_start_page ***/
 function show_start_page(){
 
     if (!isset($_SESSION['username'])){
@@ -75,7 +78,7 @@ function show_start_page(){
     include_once('views/start_page.php');
 }
 
-
+/*** check_admin_permissions ***/
 function check_admin_permissions(){
 
     if (!isset($_SESSION['username']) || !isset($_SESSION['role'])){
@@ -89,7 +92,7 @@ function check_admin_permissions(){
     }
 }
 
-
+/*** add_book ***/
 function add_book(){
     global $connection;
     global $errors;
@@ -210,6 +213,7 @@ function add_book(){
     }
 }
 
+/*** show_book_page ***/
 function show_book_page($id){
     global $connection;
 
@@ -228,6 +232,7 @@ function show_book_page($id){
     include_once('views/book_page.php');
 }
 
+/*** show_infrastructure_page ***/
 function show_infrastructure_page(){
     global $connection;
 
@@ -238,55 +243,236 @@ function show_infrastructure_page(){
     $result = mysqli_query($connection, $sql);
 
     while ($row = mysqli_fetch_assoc($result)){
-        $infra[$row["name"]] = array();
+        $infra[$row["name"]]["id"] = $row["id"];
     }
 
-    $sql = "SELECT tvari_kodu_bookcases.id, tvari_kodu_bookcases.description, tvari_kodu_bookcases.height, tvari_kodu_rooms.name 
+    $sql = "
+            SELECT tvari_kodu_bookcases.id, tvari_kodu_bookcases.description, tvari_kodu_rooms.name 
             FROM tvari_kodu_bookcases 
-            INNER JOIN tvari_kodu_rooms ON tvari_kodu_bookcases.room = tvari_kodu_rooms.id";
+            INNER JOIN tvari_kodu_rooms ON tvari_kodu_bookcases.room = tvari_kodu_rooms.id
+            ";
     $result = mysqli_query($connection, $sql);
 
     while ($row = mysqli_fetch_assoc($result)){
-        $infra[$row["name"]][$row["id"]] = $row;
+        $infra[$row["name"]]["bookcases"][$row["id"]] = $row;
     }
 
-    $sql = "SELECT tvari_kodu_bookcases.id, tvari_kodu_categories.category, tvari_kodu_categories.system, tvari_kodu_shelves.shelf_nr, tvari_kodu_rooms.name
-            FROM (((tvari_kodu_shelves 
+    $sql = "
+            SELECT tvari_kodu_bookcases.id, tvari_kodu_shelves.id AS 'shelf_id', tvari_kodu_categories.category, tvari_kodu_categories.color_id, tvari_kodu_systems.description AS 'category_description', tvari_kodu_shelves.shelf_nr, tvari_kodu_rooms.name
+            FROM ((((tvari_kodu_shelves 
             INNER JOIN tvari_kodu_bookcases ON tvari_kodu_bookcases.id = tvari_kodu_shelves.bookcase)
             INNER JOIN  tvari_kodu_categories ON tvari_kodu_categories.id = tvari_kodu_shelves.category)
             INNER JOIN tvari_kodu_rooms ON tvari_kodu_rooms.id = tvari_kodu_bookcases.room)
-            ORDER BY shelf_nr";
+            INNER JOIN tvari_kodu_systems ON tvari_kodu_systems.id = tvari_kodu_categories.system)
+            ORDER BY shelf_nr
+            ";
     $result = mysqli_query($connection, $sql);
 
     while ($row = mysqli_fetch_assoc($result)){
-        $infra[$row["name"]][$row["id"]][] = $row;
+        $infra[$row["name"]]["bookcases"][$row["id"]]["shelves"][] = $row;
     }
 
+    include_once('views/infra_page.php');
 
-/*
+    /*
     echo "<pre>";
     print_r($infra);
     echo "</pre>";
-    //include_once('views/book_page.php');
-*/
-
+    */
 }
 
+/*** add_room_form ***/
+function add_room_form(){
+    global $connection;
+    global $errors;
+
+    check_admin_permissions();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['add_room']) && !empty($_POST['new_room'])){
+
+        $room = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_room']));
+
+        $sql = "INSERT INTO tvari_kodu_rooms (name) VALUES ('".$room."')";
+        $result = mysqli_query($connection, $sql);
+
+        echo $sql;
+        if ($result && mysqli_insert_id($connection) > 0){
+            header("Location: ?page=infra");
+            die();
+        }
+        else{
+            $errors[] = 'Ruumi lisamine ebaõnnestus';
+            include_once('views/infra_page.php');
+            die();
+        }
+    } else {
+        header("Location: ?page=infra");
+    }
+}
+
+/*** add_bookcase_form ***/
+function add_bookcase_form(){
+    global $connection;
+    global $errors;
+
+    check_admin_permissions();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'
+            && !empty($_POST['add_bookcase'])
+            && !empty($_POST['new_bookcase'])
+            && !empty($_POST['new_bookcase_room_id'])){
+
+        $description = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_bookcase']));
+        $room = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_bookcase_room_id']));
+
+        $sql = "INSERT INTO tvari_kodu_bookcases (description, room) VALUES ('".$description."', ".$room.")";
+        $result = mysqli_query($connection, $sql);
+
+        if ($result && mysqli_insert_id($connection) > 0){
+            header("Location: ?page=infra");
+            die();
+        }
+        else{
+            $errors[] = 'Raamatukapi lisamine ebaõnnestus';
+            include_once('views/infra_page.php');
+            die();
+        }
+    } else {
+        header("Location: ?page=infra");
+    }
+}
+
+/*** add_shelf_form ***/
+function add_shelf_form(){
+    global $connection;
+    global $errors;
+
+    check_admin_permissions();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'
+        && !empty($_POST['add_shelf'])
+        && !empty($_POST['new_shelf_bookcase_id'])
+        && !empty($_POST['new_shelf_category'])
+        && !empty($_POST['new_shelf_nr'])){
+
+        $bookcase = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_shelf_bookcase_id']));
+        $category = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_shelf_category']));
+        $shelf_nr = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_shelf_nr']));
+
+        $sql = "INSERT INTO tvari_kodu_shelves (bookcase, category, shelf_nr) VALUES (".$bookcase.", ".$category.", ".$shelf_nr.")";
+        $result = mysqli_query($connection, $sql);
+
+        if ($result && mysqli_insert_id($connection) > 0){
+            header("Location: ?page=infra");
+            die();
+        }
+        else{
+            $errors[] = 'Riiuli lisamine ebaõnnestus';
+            include_once('views/infra_page.php');
+            die();
+        }
+    } else {
+        header("Location: ?page=infra");
+    }
+}
+
+/*** add_category_form ***/
+function add_category_form(){
+    global $connection;
+    global $errors;
+
+    check_admin_permissions();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'
+        && !empty($_POST['add_category'])
+        && !empty($_POST['new_category'])
+        && !empty($_POST['new_category_system'])
+        && !empty($_POST['new_category_color'])){
+
+        $category = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_category']));
+        $system = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_category_system']));
+        $color_id = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_category_color']));
+
+        $sql = "INSERT INTO tvari_kodu_categories (category, system, color_id) VALUES ('".$category."', ".$system.", '".$color_id."')";
+        $result = mysqli_query($connection, $sql);
+
+        if ($result && mysqli_insert_id($connection) > 0){
+            header("Location: ?page=infra");
+            die();
+        }
+        else{
+            $errors[] = 'Kategooria lisamine ebaõnnestus';
+            include_once('views/infra_page.php');
+            die();
+        }
+    } else {
+        header("Location: ?page=infra");
+    }
+}
+
+/*** add_system_form ***/
+function add_system_form(){
+    global $connection;
+    global $errors;
+
+    check_admin_permissions();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'
+        && !empty($_POST['add_system'])
+        && !empty($_POST['new_system'])){
+
+        $description = mysqli_real_escape_string($connection, htmlspecialchars($_POST['new_system']));
+
+        $sql = "INSERT INTO tvari_kodu_systems (description) VALUES ('".$description."')";
+        $result = mysqli_query($connection, $sql);
+
+        if ($result && mysqli_insert_id($connection) > 0){
+            header("Location: ?page=infra");
+            die();
+        }
+        else{
+            $errors[] = 'Sorteerimiskriteeriumi lisamine ebaõnnestus';
+            include_once('views/infra_page.php');
+            die();
+        }
+    } else {
+        header("Location: ?page=infra");
+    }
+}
+
+/*** fetch_categories ***/
 function fetch_categories(){
     global $connection;
 
     $categories = array();
 
-    $sql = "SELECT DISTINCT category FROM tvari_kodu_categories";
+    $sql = "SELECT id, category FROM tvari_kodu_categories ORDER BY category";
     $result = mysqli_query($connection, $sql);
 
     while ($row = mysqli_fetch_assoc($result)){
-        $categories[] = $row["category"];
+        $categories[] = $row;
     }
 
     return $categories;
 }
 
+/*** fetch_systems ***/
+function fetch_systems(){
+    global $connection;
+
+    $systems = array();
+
+    $sql = "SELECT id, description FROM tvari_kodu_systems ORDER BY description";
+    $result = mysqli_query($connection, $sql);
+
+    while ($row = mysqli_fetch_assoc($result)){
+        $systems[] = $row;
+    }
+
+    return $systems;
+}
+
+/*** upload ***/
 function upload($name, $year){
     global $errors;
 
@@ -333,7 +519,8 @@ function upload($name, $year){
 	}
 }
 
-/* https://stackoverflow.com/questions/2668854/sanitizing-strings-to-make-them-url-and-filename-safe */
+/*** upload ***/
+/*** https://stackoverflow.com/questions/2668854/sanitizing-strings-to-make-them-url-and-filename-safe ***/
 function sanitize_filename($string)
 {
     $string = htmlentities($string, ENT_QUOTES, 'UTF-8');

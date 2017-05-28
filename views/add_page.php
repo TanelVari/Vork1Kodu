@@ -6,7 +6,7 @@ global $errors;
 
 <h2>Lisa raamat</h2>
 
-<form action="?page=add" method="POST" enctype="multipart/form-data" name="addBookForm" onsubmit="return validate()">
+<form action="?page=add" method="POST" enctype="multipart/form-data" name="add_book_form" onsubmit="return validate_book()">
 
     <label for="title">Pealkiri:</label><br/>
     <input type="text" name="title" id="title" value="<?php if (isset($book['title'])) echo htmlspecialchars($book['title']); ?>"/><br/><br/>
@@ -31,11 +31,11 @@ global $errors;
 
         if (isset($categories)){
             foreach($categories as $cat){
-                echo "<option value=\"".$cat."\"";
-                if (isset($book['category']) && $book['category'] == $cat){
+                echo "<option value=\"".$cat["category"]."\"";
+                if (isset($book['category']) && $book['category'] == $cat["category"]){
                     echo " selected";
                 }
-                echo ">".$cat."</option>";
+                echo ">".$cat["category"]."</option>";
             }
         }
         ?>
@@ -69,33 +69,31 @@ global $errors;
         }
     }
 
-    function validate() {
-        var x = document.forms["addBookForm"]["title"].value;
+    function validate_book() {
+        var x = document.forms["add_book_form"]["title"].value;
         if (x == "") {
             alert("Pealkiri on puudu");
             return false;
         }
-        x = document.forms["addBookForm"]["author"].value;
+        x = document.forms["add_book_form"]["author"].value;
         if (x == "") {
             alert("Autor on puudu");
             return false;
         }
-        x = document.forms["addBookForm"]["year"].value;
+        x = document.forms["add_book_form"]["year"].value;
         if (x == "") {
             alert("Aasta on puudu");
             return false;
         }
-        x = document.forms["addBookForm"]["isbn"].value;
+        x = document.forms["add_book_form"]["isbn"].value;
         if (x == "" && !document.getElementById('no_isbn').checked) {
             alert("ISBN on puudu");
             return false;
         }
-        x = document.forms["addBookForm"]["cover"].value;
+        x = document.forms["add_book_form"]["cover"].value;
         if (x == "") {
             alert("Kaanepilt on puudu");
             return false;
         }
     }
-
-
 </script>

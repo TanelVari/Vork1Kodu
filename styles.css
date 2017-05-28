@@ -5,6 +5,11 @@ body {
 	font-size: 0.8em;
 }
 
+h3, h4 {
+	padding: 0;
+	margin: 0;
+}
+
 #container {
 	width: 800px;
 	overflow: auto;
@@ -66,7 +71,64 @@ body {
 .book_cover {
 	float: left;
 }
+
 .book_info {
 	float: left;
 	margin-left: 16px;
+}
+
+.box_room, .box_bookcase {
+	padding: 8px;
+	margin: 4px;
+	margin-top: 8px;
+}
+
+.box_bookcase {
+	border: 3px double black;
+}
+
+.box_shelf {
+	border-bottom: 1px solid dimgray;
+	padding: 16px;
+}
+
+hr.line, hr.line_lighter {
+	height: 1px;
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+hr.line {
+	background: dimgray;
+}
+hr.line_lighter {
+	background: lightgray;
+}
+
+.box_bookcase h4 {
+	padding-bottom: 4px;
+	border-bottom: 1px solid dimgray;
+	margin-bottom: 8px;
+}
+.box_room h3 {
+	margin-bottom: 8px;
+}
+.category_desc {
+	font-size: 0.7em;
+}
+
+.padding_bottom {
+	padding: 0 0 8px 0;
+}
+
+.padding_top {
+	 padding: 8px 0 0 0;
+ }
+
+.padding_top_bigger {
+	padding: 24px 0 0 0;
+}
+
+.padding_top_bottom {
+	padding: 8px 0 8px 0;
 }

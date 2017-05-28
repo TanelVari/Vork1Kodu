@@ -43,6 +43,24 @@ switch($page){
     case "infra":
         show_infrastructure_page();
         break;
+
+    case "add_room":
+        add_room_form();
+        break;
+    case "add_bookcase":
+        add_bookcase_form();
+        break;
+    case "add_shelf":
+        add_shelf_form();
+        break;
+
+    case "add_category":
+        add_category_form();
+        break;
+    case "add_system":
+        add_system_form();
+        break;
+
     case "logout":
         logout();
         break;
