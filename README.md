@@ -18,3 +18,7 @@ Kustutamised olidki mõeldud hiljem juurde tegemiseks, sest kõigepealt tuleb ra
 
 Ideaalplaan:
 Hankida triipkoodilugeja ja siis parsida andmed veebist naksti kohale. :)
+
+Testimiseks:
+user: Tanel
+pwd: kala
