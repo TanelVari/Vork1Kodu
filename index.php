@@ -38,6 +38,12 @@ switch($page){
     case "add":
         add_book();
         break;
+    case "search":
+        do_search();
+        break;
+    case "category":
+        show_category();
+        break;
     case "book":
         if (isset($id)){
             show_book_page($id);

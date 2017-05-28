@@ -184,6 +184,7 @@ function sanitize_filename($string)
     return trim($string, ' -');
 }
 
+
 /*
 echo "<pre>";
 print_r($categories);

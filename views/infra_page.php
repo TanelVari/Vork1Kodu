@@ -104,7 +104,7 @@
                             <div class="box_shelf" style="background-color: <?= $shelf["color_id"] ?>">
                                 Riiul <?= $shelf["shelf_nr"] ?>.<br/>
                                 <?= $shelf["category"] ?><br/>
-                                <span class="category_desc"><?= $shelf["category_description"] ?></span>
+                                <span class="font_smaller"><?= $shelf["category_description"] ?></span>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>

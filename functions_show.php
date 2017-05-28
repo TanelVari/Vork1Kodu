@@ -79,4 +79,66 @@ function show_infrastructure_page(){
     */
 }
 
+/*** do_search ***/
+function do_search(){
+    global $connection;
+
+    check_admin_permissions();
+
+    $search_results = array();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'
+            && !empty($_POST['search'])
+            && !empty($_POST['keyword'])){
+
+        $keyword = mysqli_real_escape_string($connection, htmlspecialchars($_POST['keyword']));
+
+        $sql = "SELECT * FROM tvari_kodu_books WHERE title LIKE '%".$keyword."%' OR author LIKE '%".$keyword."%'";
+        $result = mysqli_query($connection, $sql);
+
+        while ($row = mysqli_fetch_assoc($result)){
+            $search_results[] = $row;
+        }
+
+        include_once('views/start_page.php');
+
+    } else {
+        header("Location: ?page=start");
+        die();
+    }
+}
+
+/*** show_category ***/
+function show_category(){
+    global $connection;
+
+    check_admin_permissions();
+
+    $category_search_results = array();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'
+        && !empty($_POST['search_category'])
+        && !empty($_POST['category'])){
+
+        $category = mysqli_real_escape_string($connection, htmlspecialchars($_POST['category']));
+
+        $sql = "
+                SELECT tvari_kodu_books.*, tvari_kodu_categories.category AS 'book_category' 
+                FROM tvari_kodu_books 
+                INNER JOIN tvari_kodu_categories ON tvari_kodu_categories.id = tvari_kodu_books.category 
+                WHERE tvari_kodu_books.category = ".$category;
+        $result = mysqli_query($connection, $sql);
+
+        while ($row = mysqli_fetch_assoc($result)){
+            $category_search_results[] = $row;
+        }
+
+        include_once('views/start_page.php');
+
+    } else {
+        header("Location: ?page=start");
+        die();
+    }
+}
+
 ?>
