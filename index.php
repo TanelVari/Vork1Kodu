@@ -1,6 +1,10 @@
 <?php
 
-require_once('functions.php');
+require_once('functions_base.php');
+require_once('functions_add.php');
+require_once('functions_borrow.php');
+require_once('functions_show.php');
+
 session_start();
 connect_db();
 
@@ -42,6 +46,13 @@ switch($page){
         break;
     case "infra":
         show_infrastructure_page();
+        break;
+
+    case "borrow":
+        borrow_book();
+        break;
+    case "return":
+        return_book();
         break;
 
     case "add_room":

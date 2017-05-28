@@ -75,6 +75,7 @@ h3, h4 {
 .book_info {
 	float: left;
 	margin-left: 16px;
+	clear: right;
 }
 
 .box_room, .box_bookcase {
