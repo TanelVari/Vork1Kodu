@@ -228,6 +228,50 @@ function show_book_page($id){
     include_once('views/book_page.php');
 }
 
+function show_infrastructure_page(){
+    global $connection;
+
+    check_admin_permissions();
+    $infra = array();
+
+    $sql = "SELECT DISTINCT * FROM tvari_kodu_rooms ORDER BY id";
+    $result = mysqli_query($connection, $sql);
+
+    while ($row = mysqli_fetch_assoc($result)){
+        $infra[$row["name"]] = array();
+    }
+
+    $sql = "SELECT tvari_kodu_bookcases.id, tvari_kodu_bookcases.description, tvari_kodu_bookcases.height, tvari_kodu_rooms.name 
+            FROM tvari_kodu_bookcases 
+            INNER JOIN tvari_kodu_rooms ON tvari_kodu_bookcases.room = tvari_kodu_rooms.id";
+    $result = mysqli_query($connection, $sql);
+
+    while ($row = mysqli_fetch_assoc($result)){
+        $infra[$row["name"]][$row["id"]] = $row;
+    }
+
+    $sql = "SELECT tvari_kodu_bookcases.id, tvari_kodu_categories.category, tvari_kodu_categories.system, tvari_kodu_shelves.shelf_nr, tvari_kodu_rooms.name
+            FROM (((tvari_kodu_shelves 
+            INNER JOIN tvari_kodu_bookcases ON tvari_kodu_bookcases.id = tvari_kodu_shelves.bookcase)
+            INNER JOIN  tvari_kodu_categories ON tvari_kodu_categories.id = tvari_kodu_shelves.category)
+            INNER JOIN tvari_kodu_rooms ON tvari_kodu_rooms.id = tvari_kodu_bookcases.room)
+            ORDER BY shelf_nr";
+    $result = mysqli_query($connection, $sql);
+
+    while ($row = mysqli_fetch_assoc($result)){
+        $infra[$row["name"]][$row["id"]][] = $row;
+    }
+
+
+/*
+    echo "<pre>";
+    print_r($infra);
+    echo "</pre>";
+    //include_once('views/book_page.php');
+*/
+
+}
+
 function fetch_categories(){
     global $connection;
 

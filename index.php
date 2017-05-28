@@ -40,6 +40,9 @@ switch($page){
         }
         show_start_page();
         break;
+    case "infra":
+        show_infrastructure_page();
+        break;
     case "logout":
         logout();
         break;
