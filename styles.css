@@ -133,3 +133,21 @@ hr.line_lighter {
 .padding_top_bottom {
 	padding: 8px 0 8px 0;
 }
+
+/* Menu */
+/* https://css-tricks.com/star-ratings/ */
+/* ********************************************************** */
+.rating {
+
+}
+.rating > span {
+	display: inline-block;
+	position: relative;
+	width: 1.1em;
+}
+/*
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+	content: "\2605";
+	position: absolute;
+}*/

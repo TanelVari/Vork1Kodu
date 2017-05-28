@@ -28,8 +28,21 @@
         <?php if (isset($book['category_name'])): ?>
             <p>Kategoorias: <?php echo htmlspecialchars($book['category_name']); ?></p>
         <?php endif; ?>
+
         <?php if (isset($book['rating'])): ?>
-            <p>Rating: <?php echo htmlspecialchars($book['rating']); ?></p>
+            <?php $rating = intval(htmlspecialchars($book['rating'])); ?>
+            <p>
+            <div class="rating">
+                <?php
+                    for ($i=0; $i < $rating; $i++){
+                        echo "<span>★</span>";
+                    }
+                    for ($i=0; $i < 5 - $rating; $i++){
+                        echo "<span>☆</span>";
+                    }
+                ?>
+            </div>
+            </p>
         <?php endif; ?>
         <?php if (isset($book['comment'])): ?>
             <p><?php echo htmlspecialchars($book['comment']); ?></p>
