@@ -12,4 +12,4 @@ Tegemata:
   * laenutajate kustutamine
   * kategooriate, riiulite, kappide ja tubade kustutamine
 
-Kustutamised olidki mõeldud hiljem juurde tegemiseks, sest kõigepealt tuleb raamatud sisse toksida ja laenutajaid enamasti tekib juurde, sõpru nii naljalt ära ei kao miskipärast.
+Kustutamised olidki mõeldud hiljem juurde tegemiseks, sest kõigepealt tuleb raamatud sisse toksida ja laenutajaid enamasti tekib juurde, sõpru nii naljalt ära ei kao miskipärast. Eriti suurepärase disainiga ka väga palju vaeva ei näinud, sest minu jaoks on selle projekti puhul oluline funktsionaalsus. Vahest siiski ei kriibi silma.
