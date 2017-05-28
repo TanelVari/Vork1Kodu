@@ -96,9 +96,7 @@ function add_book(){
 
     check_admin_permissions();
 
-    if (empty($book)){
-        $book = array();
-    }
+    $book = array();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['add_book'])){
         if (empty($_POST['title'])){
@@ -197,7 +195,7 @@ function add_book(){
             $result = mysqli_query($connection, $sql);
 
             if ($result && mysqli_insert_id($connection) > 0){
-                header("Location: ?"); // SIIA TULEB RAAMATU LEHT PANNA
+                header("Location: ?page=book&id=".mysqli_insert_id($connection));
                 die();
             }
             else{
@@ -210,6 +208,24 @@ function add_book(){
     else {
         include_once('views/add_page.php');
     }
+}
+
+function show_book_page($id){
+    global $connection;
+
+    check_admin_permissions();
+    $book = array();
+
+    $id = mysqli_real_escape_string($connection, htmlspecialchars($id));
+
+    $sql = "SELECT * FROM tvari_kodu_books INNER JOIN tvari_kodu_categories ON tvari_kodu_books.category = tvari_kodu_categories.id WHERE tvari_kodu_books.id = ".$id;
+    $result = mysqli_query($connection, $sql);
+
+    while ($row = mysqli_fetch_assoc($result)){
+        $book = $row;
+    }
+
+    include_once('views/book_page.php');
 }
 
 function fetch_categories(){

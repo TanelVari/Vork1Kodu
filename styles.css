@@ -58,7 +58,15 @@ body {
 }
 /* ********************************************************** */
 
-.error_text{
+.error_text {
 	color: red;
 	font-size: 0.7em;
+}
+
+.book_cover {
+	float: left;
+}
+.book_info {
+	float: left;
+	margin-left: 16px;
 }

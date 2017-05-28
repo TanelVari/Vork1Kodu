@@ -6,7 +6,7 @@ global $errors;
 
 <h2>Lisa raamat</h2>
 
-<form action="?page=add" method="POST" enctype="multipart/form-data" name="addBookForm" > <!-- onsubmit="return validate()" -->
+<form action="?page=add" method="POST" enctype="multipart/form-data" name="addBookForm" onsubmit="return validate()">
 
     <label for="title">Pealkiri:</label><br/>
     <input type="text" name="title" id="title" value="<?php if (isset($book['title'])) echo htmlspecialchars($book['title']); ?>"/><br/><br/>

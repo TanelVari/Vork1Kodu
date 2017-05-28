@@ -14,6 +14,7 @@
             <li><a href="?">Algusesse</a></li>
             <?php if(isset($_SESSION['username']) && isset($_SESSION['role']) && $_SESSION['role'] == 'owner'): ?>
                 <li><a href="?page=add">Lisa raamat</a></li>
+                <li><a href="?page=book&id=9">XXXXXX</a></li>
                 <li><a href="?page=logout">Logi välja</a></li>
             <?php endif; ?>
         </ul>
