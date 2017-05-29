@@ -33,7 +33,7 @@ function login(){
             $u = mysqli_real_escape_string($connection, $_POST['username']);
             $p = mysqli_real_escape_string($connection, $_POST['password']);
 
-            $sql = "SELECT * FROM tvari_kodu_users WHERE name = '".$u."' AND password = SHA1('".$p."')";
+            $sql = "SELECT * FROM tvari_kodu_users WHERE BINARY name = '".$u."' AND password = SHA1('".$p."')";
             $result = mysqli_query($connection, $sql);
 
             if ($result && mysqli_num_rows($result) == 1){
