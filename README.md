@@ -13,6 +13,7 @@ Tegemata:
   * kategooriate, riiulite, kappide ja tubade kustutamine
   * riiulite järjekorranumbri üle (loetakse ülevalt alla) ei ole süsteemipoolset kontrolli
   * esialgu kuvatakse katagooria all kõik seal olevad raamatud (sest testperiood on), pärast tuleb lehekülgedeks jagamine juurde kirjutada
+  * kõik SQL päringud ei pruugi kõige optimaalsemad olla
 
 Kustutamised olidki mõeldud hiljem juurde tegemiseks, sest kõigepealt tuleb raamatud sisse toksida ja laenutajaid enamasti tekib juurde, sõpru nii naljalt ära ei kao miskipärast. Eriti suurepärase disainiga ka väga palju vaeva ei näinud, sest minu jaoks on selle projekti puhul oluline funktsionaalsus. Vahest siiski ei kriibi silma.
 
